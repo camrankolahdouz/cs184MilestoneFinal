@@ -1,0 +1,50 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<style>  
+    div.padded {  
+      padding-top: 0px;  
+      padding-right: 100px;  
+      padding-bottom: 0.25in;  
+      padding-left: 100px;  
+    }  
+  </style> 
+<title>Final Project  |  Camran Kolahdouz-Isfahani, Reid Johnson, Anna Pan</title>
+<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="style.css" media="screen" />
+</head>
+<body>
+<br />
+<h1 align="middle">Simulating a Liquid in 2-Dimensions</h1>
+    <div class="padded">
+        <p>Our goal is to realistically model the motion of liquids over time. We do this by utilizing a grid structure and analyzing, measuring, and rendering the amount of incompressible fluid within each square. Our team members are Reid Johnson, Camran Kolahdouz-Isfahani, and Anna Pan.</p>
+
+    <h2 align="middle">Problem Description</h2>
+        <p>Motions within a liquid are much more complicated to model in principle and in execution than motions of a few solids, as many of the physical principles that govern them are inherently less linear, or at least, less naturally linearizable. It is even more complex to consider their compression, since it is not easy to extract this from a representation of particles or grid levels. We can avoid this by representing only incompressible fluid, and we can use a “grid” structure to account for and represent the amount of fluid in each grid square of our model at any given time step, making liberal use of conservation of mass to assume that the total amount of water in grid squares remains the same, which reduces the dimensionality of our problem significantly. Our overall goal in liquid simulation is to be able to semirealistically model the movements of a “typical” fluid, like water or oil, over time.<p/>
+    <h2 align="middle">Milestone Status Report</h2>
+        <p>We have been making steady progress on our fluid simulator and have figured out most of the larger framework issues surrounding the project, and all that is left now is to code out the mathematics of the forces incurred by the Navier Stokes equation. We first added a grid data structure to Rasterizer.cpp in project 1, following the format of the data structure in <a href="http://users.encs.concordia.ca/~grogono/Graphics/fluid-5.pdf">4.2</a>. We created a grid with the exact same dimensions as supersample_buffer called pressures to store the pressure at each grid square, and then another two grids called xVelocities and yVelocities to store velocities (in the x direction) at the vertical grid lines and velocities (in the y direction) at the horizontal grid lines, roughly representing how much fluid “flows” across each grid line.</p>
+        <p>We added functionality to the user interface of Project 1 as follows: </p>
+        <p>1.After rendering a scene as usual, the user can now hit “W” to spawn a block of liquid (water) onto the screen. Hitting W subsequently will continue to respawn the water at its original position.<p/>
+         <p>2.Then, the user can hit “T” to progress the simulation one time step, rendering the subsequent state of the system. When the user hits “W” after the scene has already been rendered, the method RasterizerImp::initialize_liquid() is called, which initializes an empty region of the screen to be liquid, ignoring any rendered solids in that region. It does this by setting pixels in the appropriate region of supersample_buffer to be a dummy color indicating that the corresponding square of the grid contains liquid, and then storing initial pressures of 1 and initial velocities of 0 in the appropriate data structures (pressures, xVelocities, and yVelocities).</p>
+        <p>When the user hits “T”, the method RasterizerImp::timestep() is called, which progresses the simulation a time step. It does this by approximating the force at the location of each velocity measurement and updating the velocity measurement accordingly. Then, each grid square of liquid is carried to its new location along these velocity vectors, halting its momentum in some direction if it hits a solid in that direction and is restricted by its normal force. Currently, the only force in our universe (other than this normal force) is gravity, so we can only observe water falling parabolically from its starting position as if it was composed of solid vertical strips. In the future, we will incorporate the more sophisticated mathematical methods necessary to approximate the true forces on the grid squares as dictated by the Navier Stokes equation in the timestep() method.</p>
+    <h2 align="middle">Milestone Video and Presentation</h2>
+        <p><a href="https://youtu.be/n2L51Jm2SIs">Here</a> is the link to the short video summarizing our progress.</p>
+        <p><a href="https://docs.google.com/presentation/d/1THn1kMECcms1LkpcUFV3cV6aqOBmz8PqUvAF-Fdvwtw/edit?usp=sharing">Here</a> is a link to the presentation we created.</p>
+        <p>Below are the links to the specific videos we created for the presentation</p>
+        <p>This <a href="https://youtu.be/ygUeWbYT71A">video</a> shows our water fall through a Galton Board.</p>
+        <p>This <a href="https://youtu.be/5vMNLag_pc0">video</a> shows our water fall over the robot man from the first project.</p>
+
+    <h2 align="middle">Resources</h2>
+        <p>We are building off our own Project 1 code. This means we are also using the same computing platform, hardware and software resources as we used in Project 1.</p>
+        <p>Click <a href="https://escholarship.org/uc/item/7zd8195h#article_main">here</a> for a comparison of grid-based techniques and the Navier-Stokes fluid simulation</p>
+        <p>Click <a href="https://en.wikipedia.org/wiki/Navier%E2%80%93Stokes_equations">here</a> for a Wikipedia page on the Navier-Stokes equations</p>
+        <p>Click <a href="https://www.cs.virginia.edu/~lat7h/blog/posts/503.html">here</a> for a paper on simulating grid-based fluids</p>
+
+
+</div>
+</body>
+</html>
+
+
+
+
